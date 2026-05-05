@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Safety Radar{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <h1>🛡️ Personal Safety Radar</h1>
+  <p>AI-powered risk scoring personalised to your age, health conditions, and real-time weather</p>
+</div>
+
+<div class="profile-setup">
+  <h3>⚙️ Your Safety Profile</h3>
+  <div class="profile-row">
+    <div class="profile-field">
+      <label>Age Group</label>
+      <select id="ageGroup" class="form-field select">
+        <option value="child">Child (under 12)</option>
+        <option value="teen">Teen (13–17)</option>
+        <option value="adult" selected>Adult (18–59)</option>
+        <option value="senior">Senior (60+)</option>
+      </select>
+    </div>
+    <div class="profile-field">
+      <label>Health Conditions</label>
+      <select id="healthCond" multiple style="min-width:200px;height:72px;background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.85rem;padding:6px 10px;border-radius:6px;outline:none">
+        <option value="asthma">Asthma</option>
+        <option value="heart_disease">Heart Disease</option>
+        <option value="diabetes">Diabetes</option>
+        <option value="copd">COPD</option>
+        <option value="hypertension">Hypertension</option>
+        <option value="pregnancy">Pregnancy</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="loadSafety()">🔍 Analyse My Risk</button>
+  </div>
+</div>
+
+<div class="grid-2 mb-4">
+  <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;animation-delay:.05s">
+    <div class="card-label" style="margin-bottom:16px">OVERALL RISK SCORE</div>
+    <div id="overallRing">
+      <svg class="risk-ring-svg" width="160" height="160" viewBox="0 0 160 160">
+        <circle class="risk-ring-track" cx="80" cy="80" r="64" stroke-width="10"/>
+        <circle class="risk-ring-fill" id="overallArc" cx="80" cy="80" r="64" stroke-width="10"
+          stroke="#10b981" stroke-dasharray="402" stroke-dashoffset="402"/>
+      </svg>
+      <div class="risk-ring-inner" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+        <div class="risk-score-num" id="overallScore" style="color:#10b981">--</div>
+        <div class="risk-score-lbl" id="overallLevel">Calculating…</div>
+      </div>
+    </div>
+    <div id="overallColor" style="margin-top:12px;font-size:.82rem;color:var(--text-2);text-align:center">Run analysis above</div>
+  </div>
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">RISK SUMMARY</span></div>
+    <div id="riskSummary" style="display:flex;flex-direction:column;gap:10px">
+      <div style="color:var(--text-3);font-size:.82rem">Select your profile and click Analyse My Risk</div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">INDIVIDUAL RISK BREAKDOWN</span></div>
+  <div id="riskCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px"></div>
+</div>
+
+<div class="card" style="animation-delay:.2s">
+  <div class="card-header"><span class="card-label">📋 PERSONALISED SAFETY ADVICE</span></div>
+  <div id="safetyAdvice" style="display:flex;flex-direction:column;gap:10px"></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/safety_radar.js"></script>{% endblock %}

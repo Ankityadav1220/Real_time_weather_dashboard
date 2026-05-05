@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Nowcasting{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>⚡ Real-Time Nowcasting</h1><p>AI detects sudden weather changes 30–90 minutes ahead using live sensor data analysis</p></div>
+<div class="stat-row mb-6">
+  <div class="stat-card"><div class="stat-val" id="nc-anomaly" style="color:var(--warning)">--</div><div class="stat-lbl">Anomaly Score</div></div>
+  <div class="stat-card"><div class="stat-val" id="nc-events">--</div><div class="stat-lbl">Active Events</div></div>
+  <div class="stat-card"><div class="stat-val" id="nc-temp">--°C</div><div class="stat-lbl">Current Temp</div></div>
+  <div class="stat-card"><div class="stat-val" id="nc-pressure">-- hPa</div><div class="stat-lbl">Pressure</div></div>
+  <div class="stat-card"><div class="stat-val" id="nc-wind">-- km/h</div><div class="stat-lbl">Wind Speed</div></div>
+</div>
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header"><span class="card-label">⚠️ DETECTED CHANGE EVENTS</span><button class="btn btn-outline" style="font-size:.75rem;padding:5px 12px" onclick="loadNowcast()">↻ Refresh</button></div>
+    <div id="ncEvents" style="display:flex;flex-direction:column;gap:10px"><div style="color:var(--text-3);font-size:.82rem">Loading nowcast events…</div></div>
+  </div>
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">📈 TREND INDICATORS</span></div>
+    <div id="ncTrends" style="display:flex;flex-direction:column;gap:12px"></div>
+  </div>
+</div>
+<div class="card mb-4" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">🔮 90-MINUTE PROJECTIONS</span></div>
+  <div class="chart-wrap"><canvas id="ncChart"></canvas></div>
+</div>
+<div class="card" style="animation-delay:.2s">
+  <div class="card-header"><span class="card-label">📊 PRESSURE TREND (STORM PREDICTOR)</span></div>
+  <div class="chart-wrap"><canvas id="pressureChart"></canvas></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/nowcasting.js"></script>{% endblock %}

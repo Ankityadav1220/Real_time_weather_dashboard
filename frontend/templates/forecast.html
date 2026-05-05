@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Forecast{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>📅 Detailed Forecast</h1>
+  <p>48-hour hourly, 7-day outlook and weather pattern analysis</p>
+</div>
+
+<!-- ─── Today Summary ───────────────────────────────────────── -->
+<div class="stat-row mb-6" id="forecastStats">
+  <div class="stat-card"><div class="stat-val" id="fc-high">--°C</div><div class="stat-lbl">Today High</div></div>
+  <div class="stat-card"><div class="stat-val" id="fc-low">--°C</div><div class="stat-lbl">Today Low</div></div>
+  <div class="stat-card"><div class="stat-val" id="fc-rain">--%</div><div class="stat-lbl">Rain Chance</div></div>
+  <div class="stat-card"><div class="stat-val" id="fc-wind">-- km/h</div><div class="stat-lbl">Max Wind</div></div>
+  <div class="stat-card"><div class="stat-val" id="fc-hum">--%</div><div class="stat-lbl">Avg Humidity</div></div>
+</div>
+
+<!-- ─── 48h Temperature Chart ──────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.05s">
+  <div class="card-header">
+    <span class="card-label">48-HOUR TEMPERATURE FORECAST</span>
+    <span id="fcCity" class="mono" style="font-size:.75rem;color:var(--text-2)">--</span>
+  </div>
+  <div class="chart-wrap tall"><canvas id="fc-tempChart"></canvas></div>
+</div>
+
+<!-- ─── Side-by-side charts ────────────────────────────────── -->
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">PRECIPITATION FORECAST</span></div>
+    <div class="chart-wrap"><canvas id="fc-rainChart"></canvas></div>
+  </div>
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-header"><span class="card-label">WIND & PRESSURE</span></div>
+    <div class="chart-wrap"><canvas id="fc-windpChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ─── 7-Day Outlook ──────────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.2s">
+  <div class="card-header"><span class="card-label">7-DAY WEATHER OUTLOOK</span></div>
+  <div id="sevenDay" style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px"></div>
+</div>
+
+<!-- ─── Hourly table ────────────────────────────────────────── -->
+<div class="card" style="animation-delay:.25s">
+  <div class="card-header"><span class="card-label">HOURLY BREAKDOWN</span></div>
+  <div style="overflow-x:auto">
+    <table id="fcTable" style="width:100%;border-collapse:collapse;font-size:.82rem">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border)">
+          <th style="padding:8px;text-align:left;color:var(--text-2);font-weight:500">Time</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Condition</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Temp</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Feels Like</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Humidity</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Wind</th>
+          <th style="padding:8px;text-align:center;color:var(--text-2);font-weight:500">Rain %</th>
+        </tr>
+      </thead>
+      <tbody id="fcTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.day-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center;transition:border-color .2s}
+.day-card:hover{border-color:var(--accent)}
+.day-name{font-size:.7rem;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.day-icon{font-size:1.6rem;margin:4px 0}
+.day-hi{font-size:.95rem;font-weight:700;color:var(--danger)}
+.day-lo{font-size:.82rem;color:var(--accent-2)}
+.day-rain{font-size:.65rem;color:var(--text-3);margin-top:4px}
+</style>
+{% endblock %}
+{% block scripts %}<script src="/static/js/forecast.js?v=999"></script>{% endblock %}

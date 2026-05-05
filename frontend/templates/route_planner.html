@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Route Planner{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <h1>🗺️ Smart Route Planner</h1>
+  <p>Real-road routing with live weather analysis along the route</p>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <span class="card-label">PLAN YOUR JOURNEY</span>
+    <span class="badge badge-info">Auto-syncs with your location</span>
+  </div>
+  <form id="routeForm" style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end">
+    <div style="flex:1;min-width:180px">
+      <label style="display:block;font-size:.78rem;color:var(--text-2);margin-bottom:5px">FROM (Origin)</label>
+      <input id="originInput" class="input-field" type="text" placeholder="e.g. Delhi" autocomplete="off">
+    </div>
+    <div style="display:flex;align-items:flex-end;padding-bottom:4px;font-size:1.4rem;color:var(--text-3)">→</div>
+    <div style="flex:1;min-width:180px">
+      <label style="display:block;font-size:.78rem;color:var(--text-2);margin-bottom:5px">TO (Destination)</label>
+      <input id="destInput" class="input-field" type="text" placeholder="e.g. Mumbai" autocomplete="off">
+    </div>
+    <button class="btn btn-primary" type="submit">⚡ Plan Route</button>
+  </form>
+  <p style="font-size:.75rem;color:var(--text-3);margin-top:10px">
+    💡 Origin auto-fills from your selected city. Enter any city worldwide.
+    Route uses <strong>OpenRouteService</strong> real roads when API key is set.
+  </p>
+</div>
+
+<div id="routeResult" class="hidden"></div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/route_planner.js"></script>{% endblock %}

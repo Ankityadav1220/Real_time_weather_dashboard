@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Urban Risk{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>🏙️ Urban Risk Intelligence</h1><p>Waterlogging, traffic, power grid stress and infrastructure risk powered by real-time weather data</p></div>
+<div class="stat-row mb-4">
+  <div class="stat-card"><div class="stat-val" id="ur-overall" style="color:var(--warning)">--</div><div class="stat-lbl">Urban Risk Score</div></div>
+  <div class="stat-card"><div class="stat-val" id="ur-rain">-- mm</div><div class="stat-lbl">Rain (1h)</div></div>
+  <div class="stat-card"><div class="stat-val" id="ur-wind">-- km/h</div><div class="stat-lbl">Wind Speed</div></div>
+  <div class="stat-card"><div class="stat-val" id="ur-peak">--</div><div class="stat-lbl">Peak Hours</div></div>
+</div>
+<div class="card mb-4" style="animation-delay:.05s">
+  <div class="card-header"><span class="card-label">URBAN RISK BREAKDOWN</span></div>
+  <div class="urban-grid" id="urbanGrid"></div>
+</div>
+<div class="card mb-4" style="animation-delay:.1s">
+  <div class="card-header"><span class="card-label">📢 CITY ADVISORIES</span></div>
+  <div id="urbanAdvisories" style="display:flex;flex-direction:column;gap:10px"></div>
+</div>
+<div class="card" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">📊 RISK RADAR CHART</span></div>
+  <div style="max-width:400px;margin:0 auto"><div class="chart-wrap tall"><canvas id="urbanChart"></canvas></div></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/urban_risk.js"></script>{% endblock %}

@@ -1,0 +1,288 @@
+/* ═══════════════════════════════════════════════════
+   WeatherIQ — Intelligence & AI Module Styles
+   ═══════════════════════════════════════════════════ */
+
+/* ── Sidebar AI additions ─────────────────────────── */
+.sidebar-ai-badge {
+  margin-left: auto;
+  background: linear-gradient(135deg, var(--accent), var(--info));
+  color: #fff; font-size: .55rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px; letter-spacing: .08em;
+}
+.nav-section-label {
+  font-family: var(--mono); font-size: .58rem; color: var(--text-3);
+  letter-spacing: .14em; padding: 8px 12px 4px;
+}
+.nav-ai-tag {
+  margin-left: auto;
+  background: rgba(139,92,246,.18); color: var(--info);
+  font-size: .58rem; font-weight: 700; font-family: var(--mono);
+  padding: 2px 6px; border-radius: 3px; border: 1px solid rgba(139,92,246,.3);
+}
+
+/* ── Risk Score Ring ──────────────────────────────── */
+.risk-ring-wrap {
+  position: relative; display: inline-flex;
+  align-items: center; justify-content: center;
+}
+.risk-ring-svg { transform: rotate(-90deg); }
+.risk-ring-track { fill: none; stroke: var(--border); }
+.risk-ring-fill  { fill: none; stroke-linecap: round; transition: stroke-dashoffset .9s cubic-bezier(.4,0,.2,1), stroke .5s; }
+.risk-ring-inner {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.risk-score-num { font-size: 1.6rem; font-weight: 700; font-family: var(--mono); line-height: 1; }
+.risk-score-lbl { font-size: .62rem; color: var(--text-2); margin-top: 2px; }
+
+/* ── Risk card ────────────────────────────────────── */
+.risk-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+  backdrop-filter: var(--glass-blur);
+  display: flex; flex-direction: column; gap: 8px;
+  animation: fadeUp .4s ease both; transition: border-color .3s;
+}
+.risk-card:hover { border-color: var(--border-h); }
+.risk-card-header { display: flex; align-items: center; gap: 10px; }
+.risk-card-icon  { font-size: 1.4rem; }
+.risk-card-title { font-size: .88rem; font-weight: 600; }
+.risk-card-score { margin-left: auto; font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
+.risk-card-level { font-size: .68rem; font-weight: 600; letter-spacing: .06em; }
+.risk-card-bar   { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.risk-card-fill  { height: 100%; border-radius: 2px; transition: width .9s ease; }
+.risk-card-advice{ font-size: .75rem; color: var(--text-2); line-height: 1.5; }
+
+/* ── Nowcast event card ───────────────────────────── */
+.nowcast-event {
+  border-radius: var(--radius-sm); padding: 12px 14px;
+  border-left: 4px solid; animation: slideIn .3s ease both;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.nowcast-event.high   { background: rgba(244,63,94,.08);  border-color: #f43f5e; }
+.nowcast-event.medium { background: rgba(245,158,11,.08); border-color: #f59e0b; }
+.nowcast-event.low    { background: rgba(6,182,212,.08);  border-color: #06b6d4; }
+.nowcast-icon  { font-size: 1.4rem; flex-shrink: 0; }
+.nowcast-body  { flex: 1; }
+.nowcast-title { font-size: .88rem; font-weight: 600; margin-bottom: 3px; }
+.nowcast-detail{ font-size: .78rem; color: var(--text-2); line-height: 1.5; }
+.nowcast-meta  { display: flex; gap: 10px; margin-top: 6px; }
+.nowcast-eta   { font-size: .68rem; color: var(--accent); font-family: var(--mono); }
+.nowcast-conf  { font-size: .68rem; color: var(--text-3); font-family: var(--mono); }
+
+@keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+
+/* ── Productivity score bar ───────────────────────── */
+.prod-score-bar {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.prod-label { font-size: .78rem; color: var(--text-2); width: 90px; flex-shrink: 0; }
+.prod-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.prod-fill  { height: 100%; border-radius: 4px; transition: width .9s ease; }
+.prod-val   { font-family: var(--mono); font-size: .78rem; width: 36px; text-align: right; font-weight: 600; }
+
+/* ── Window pill timeline ─────────────────────────── */
+.window-timeline {
+  display: flex; gap: 4px; overflow-x: auto; padding: 4px 0 8px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.window-pill {
+  flex: 0 0 52px; text-align: center; padding: 6px 4px;
+  border-radius: 8px; border: 1px solid var(--border);
+  transition: transform .2s; cursor: default;
+}
+.window-pill:hover { transform: translateY(-2px); }
+.window-pill.peak     { background: rgba(16,185,129,.15); border-color: #10b981; }
+.window-pill.good     { background: rgba(6,182,212,.12);  border-color: #06b6d4; }
+.window-pill.low      { background: rgba(245,158,11,.10); border-color: #f59e0b; }
+.window-pill.rest     { background: rgba(71,85,105,.12);  border-color: var(--text-3); }
+.window-time  { font-size: .62rem; color: var(--text-3); font-family: var(--mono); }
+.window-score { font-size: .78rem; font-weight: 700; font-family: var(--mono); margin: 2px 0; }
+.window-lbl   { font-size: .58rem; color: var(--text-2); }
+
+/* ── Rec card ─────────────────────────────────────── */
+.rec-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+  display: flex; gap: 12px; align-items: flex-start;
+  animation: fadeUp .4s ease both;
+}
+.rec-icon   { font-size: 1.5rem; flex-shrink: 0; }
+.rec-title  { font-size: .88rem; font-weight: 600; margin-bottom: 4px; }
+.rec-desc   { font-size: .78rem; color: var(--text-2); line-height: 1.5; }
+.rec-priority-high   { border-left: 3px solid var(--danger); }
+.rec-priority-medium { border-left: 3px solid var(--warning); }
+.rec-priority-low    { border-left: 3px solid var(--accent); }
+
+/* ── Urban risk hexagons ──────────────────────────── */
+.urban-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+.urban-tile {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px; text-align: center;
+  backdrop-filter: var(--glass-blur); animation: fadeUp .4s ease both;
+  transition: border-color .3s;
+}
+.urban-tile:hover { border-color: var(--border-h); }
+.urban-icon  { font-size: 1.8rem; margin-bottom: 8px; }
+.urban-score { font-size: 1.6rem; font-weight: 700; font-family: var(--mono); line-height: 1; }
+.urban-title { font-size: .72rem; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
+.urban-label { font-size: .7rem; font-weight: 600; margin-top: 4px; letter-spacing: .04em; }
+.urban-bar   { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.urban-fill  { height: 100%; border-radius: 2px; transition: width .9s ease; }
+
+/* ── Route segment ────────────────────────────────── */
+.route-segment {
+  display: flex; align-items: center; gap: 0;
+}
+.seg-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid; flex-shrink: 0;
+}
+.seg-line { flex: 1; height: 3px; background: var(--border); }
+.seg-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  min-width: 100px; text-align: center; font-size: .78rem;
+}
+.seg-label { font-size: .68rem; color: var(--text-3); }
+.seg-temp  { font-size: .9rem; font-weight: 600; color: var(--accent); font-family: var(--mono); }
+.seg-risk  { font-size: .68rem; font-weight: 600; margin-top: 3px; }
+
+/* ── Energy gauge ─────────────────────────────────── */
+.energy-gauge {
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; padding: 20px 0;
+}
+.kwh-big { font-size: 3rem; font-weight: 700; color: var(--warning); font-family: var(--mono); line-height: 1; }
+.kwh-unit { font-size: .9rem; color: var(--text-2); margin-top: 4px; }
+.energy-breakdown {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px;
+}
+.eb-item { text-align: center; background: var(--border); border-radius: 8px; padding: 10px; }
+.eb-val  { font-size: 1rem; font-weight: 700; font-family: var(--mono); }
+.eb-lbl  { font-size: .62rem; color: var(--text-3); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+
+/* ── AI Chat ──────────────────────────────────────── */
+.chat-wrap {
+  display: flex; flex-direction: column; height: 480px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.chat-msg { display: flex; gap: 10px; animation: fadeUp .3s ease both; }
+.chat-msg.user { flex-direction: row-reverse; }
+.chat-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; flex-shrink: 0;
+}
+.chat-avatar.ai  { background: var(--accent-glow); border: 1px solid var(--accent); color: var(--accent); }
+.chat-avatar.usr { background: rgba(139,92,246,.2); border: 1px solid var(--info); color: var(--info); }
+.chat-bubble {
+  max-width: 75%; padding: 10px 14px; border-radius: 12px;
+  font-size: .85rem; line-height: 1.55;
+}
+.chat-msg.ai   .chat-bubble { background: rgba(6,182,212,.08); border: 1px solid var(--border); border-radius: 4px 12px 12px 12px; }
+.chat-msg.user .chat-bubble { background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.25); border-radius: 12px 4px 12px 12px; }
+.chat-input-row {
+  display: flex; gap: 0; border-top: 1px solid var(--border);
+}
+.chat-input {
+  flex: 1; background: var(--bg-input); border: none; outline: none;
+  color: var(--text); font-family: var(--font); font-size: .88rem;
+  padding: 12px 16px;
+}
+.chat-send {
+  background: var(--accent); border: none; cursor: pointer;
+  color: var(--bg); padding: 0 18px; font-size: 1rem;
+  transition: background .2s;
+}
+.chat-send:hover { background: var(--accent-2); }
+
+/* ── Community report form ────────────────────────── */
+.report-form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: .75rem; color: var(--text-2); font-weight: 500; }
+.form-field select,
+.form-field input,
+.form-field textarea {
+  background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: var(--radius-xs); color: var(--text);
+  font-family: var(--font); font-size: .85rem; padding: 8px 12px;
+  outline: none; transition: border-color .2s;
+}
+.form-field select:focus,
+.form-field input:focus,
+.form-field textarea:focus { border-color: var(--accent); }
+.form-field.full { grid-column: 1 / -1; }
+
+/* ── Profile setup card ───────────────────────────── */
+.profile-setup {
+  background: linear-gradient(135deg, rgba(6,182,212,.08), rgba(139,92,246,.08));
+  border: 1px solid var(--border-h); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 20px;
+  animation: fadeUp .4s ease both;
+}
+.profile-setup h3 { font-size: .95rem; margin-bottom: 12px; color: var(--accent); }
+.profile-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+.profile-field { display: flex; flex-direction: column; gap: 5px; }
+.profile-field label { font-size: .72rem; color: var(--text-2); }
+.profile-field select { min-width: 140px; }
+
+/* ── Trend arrows ─────────────────────────────────── */
+.trend-up   { color: #f43f5e; }
+.trend-down { color: #10b981; }
+.trend-flat { color: var(--text-3); }
+
+/* ── Pulse ring (live indicator) ─────────────────── */
+.pulse-ring {
+  position: relative; display: inline-block;
+  width: 10px; height: 10px;
+}
+.pulse-ring::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid var(--success);
+  animation: pulseRing 2s infinite; opacity: 0;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(.6); opacity: .8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ── Health impact pill grid ──────────────────────── */
+.health-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+.health-tile {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px;
+  animation: fadeUp .4s ease both; transition: border-color .3s;
+}
+.health-tile:hover { border-color: var(--border-h); }
+.health-tile-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.health-tile-icon { font-size: 1.3rem; }
+.health-tile-title { font-size: .82rem; font-weight: 600; }
+.health-tile-score { font-size: 1.3rem; font-weight: 700; font-family: var(--mono); margin-left: auto; }
+.health-tile-detail { font-size: .74rem; color: var(--text-2); line-height: 1.5; }
+.health-tile-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.health-tile-fill { height: 100%; border-radius: 2px; transition: width .9s ease; }
+
+/* ── Responsive helpers ───────────────────────────── */
+@media (max-width: 600px) {
+  .urban-grid { grid-template-columns: repeat(2, 1fr); }
+  .energy-breakdown { grid-template-columns: repeat(3, 1fr); }
+  .report-form { grid-template-columns: 1fr; }
+  .health-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}AI Assistant{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>🤖 AI Weather Assistant</h1><p>Ask anything about weather, safety, travel, health, or productivity — get instant personalised answers</p></div>
+<div class="grid-2">
+  <div>
+    <div class="chat-wrap">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg ai">
+          <div class="chat-avatar ai">🤖</div>
+          <div class="chat-bubble">👋 Hello! I'm your AI Weather Assistant. Ask me anything about current conditions, safety, travel, health impacts, or what to wear today. I'll give you smart, weather-aware answers for your city!</div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Ask me about weather, travel, health, exercise…" autocomplete="off">
+        <button class="chat-send" id="chatSend" onclick="sendChat()">➤</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <span style="font-size:.72rem;color:var(--text-3)">Quick questions:</span>
+      {% for q in ['Should I carry an umbrella?','Is it safe to jog outside?','How\'s the air quality?','What should I wear today?','Is it a good time to drive?','Will it rain soon?'] %}
+      <button class="btn btn-ghost" style="font-size:.75rem;padding:5px 10px" onclick="quickAsk('{{q}}')">{{q}}</button>
+      {% endfor %}
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div class="card" style="animation-delay:.05s">
+      <div class="card-header"><span class="card-label">🌤️ CURRENT CONDITIONS</span></div>
+      <div id="assistantWeather" style="font-size:.85rem;color:var(--text-2)">Loading…</div>
+    </div>
+    <div class="card" style="animation-delay:.1s">
+      <div class="card-header"><span class="card-label">💡 SMART TIPS FOR TODAY</span></div>
+      <div id="smartTips" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <div class="card" style="animation-delay:.15s">
+      <div class="card-header"><span class="card-label">❓ EXAMPLE QUESTIONS</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--text-2)">
+        <div>• "Should I take a jacket tonight?"</div>
+        <div>• "Is it safe for my asthmatic child to go out?"</div>
+        <div>• "Best time to drive to Mumbai today?"</div>
+        <div>• "Will it rain in the next hour?"</div>
+        <div>• "Is air quality safe for running?"</div>
+        <div>• "What's the heat index right now?"</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/ai_assistant.js"></script>{% endblock %}

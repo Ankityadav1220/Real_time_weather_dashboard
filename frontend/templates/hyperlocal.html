@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Hyperlocal{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <h1>📍 Hyperlocal Weather</h1>
+  <p>1.5 km radius precision weather with urban heat island analysis</p>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <span class="card-label">YOUR LOCATION</span>
+    <span id="hlCity" class="mono" style="font-size:.85rem">--</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span id="hlCoords" style="font-size:.82rem;color:var(--text-2);font-family:var(--mono)">No GPS coordinates</span>
+    <button id="gpsBtnHyper" class="btn btn-secondary btn-sm">📍 Use GPS for Hyperlocal</button>
+  </div>
+  <p id="hyperlocalStatus" style="font-size:.8rem;color:var(--text-3);margin-top:8px">
+    Enable GPS for 1.5 km radius hyperlocal analysis
+  </p>
+</div>
+
+<div id="hyperlocalLoading" class="hidden" style="text-align:center;padding:40px;color:var(--text-2)">
+  📡 Fetching hyperlocal data…
+</div>
+
+<div id="hyperlocalContent">
+  <div class="grid-3 mb-4">
+    <div class="card"><div class="card-label mb-2">ADJUSTED TEMPERATURE</div><div class="stat-val" id="hlTemp">--</div><small style="color:var(--text-2)">Urban-heat adjusted</small></div>
+    <div class="card"><div class="card-label mb-2">ADJUSTED HUMIDITY</div><div class="stat-val" id="hlHumidity">--</div><small style="color:var(--text-2)">Micro-climate adjusted</small></div>
+    <div class="card"><div class="card-label mb-2">CONFIDENCE</div><div class="stat-val" id="hlConfidence">--</div><small style="color:var(--text-2)">Model confidence</small></div>
+  </div>
+  <div class="grid-2 mb-4">
+    <div class="card">
+      <div class="card-label mb-3">MICRO-ZONE ANALYSIS</div>
+      <div class="data-row"><span class="data-key">Micro Zone</span><span class="data-val" id="hlZone">--</span></div>
+      <div class="data-row"><span class="data-key">Analysis Radius</span><span class="data-val" id="hlRadius">--</span></div>
+      <div class="data-row"><span class="data-key">Urban Heat Island</span><span class="data-val" id="hlUHI">--</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label mb-3">CURRENT CONDITIONS</div>
+      <div class="data-row"><span class="data-key">Weather</span><span class="data-val" id="hlWeather">--</span></div>
+      <div class="data-row"><span class="data-key">Wind Speed</span><span class="data-val" id="hlWind">--</span></div>
+      <div class="data-row"><span class="data-key">Pressure</span><span class="data-val" id="hlPressure">--</span></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/hyperlocal.js"></script>{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>🏠 Weather Dashboard</h1>
+  <p>Real-time conditions, AI forecasts &amp; ML insights for your city</p>
+</div>
+
+<div class="stat-row mb-6" id="statsRow">
+  <div class="stat-card"><div class="stat-val" id="s-temp">--°</div><div class="stat-lbl">Temperature</div></div>
+  <div class="stat-card"><div class="stat-val" id="s-hum">--%</div><div class="stat-lbl">Humidity</div></div>
+  <div class="stat-card"><div class="stat-val" id="s-wind">--</div><div class="stat-lbl">Wind km/h</div></div>
+  <div class="stat-card"><div class="stat-val" id="s-aqi">--</div><div class="stat-lbl">AQI Level</div></div>
+  <div class="stat-card"><div class="stat-val" id="s-vis">--</div><div class="stat-lbl">Visibility km</div></div>
+</div>
+
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header">
+      <span class="card-label">CURRENT CONDITIONS</span>
+      <span id="cityCountry" class="mono" style="font-size:.8rem;color:var(--text-2)">--</span>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">
+      <div>
+        <div style="display:flex;align-items:flex-start;gap:4px">
+          <span id="tempBig" style="font-size:4.5rem;font-weight:700;line-height:1;letter-spacing:-.04em;color:var(--accent)">--</span>
+          <span style="font-size:1.8rem;color:var(--text-2);margin-top:10px">°C</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+          <span id="wIcon" style="font-size:2rem">🌡️</span>
+          <div>
+            <div id="wDesc" style="font-weight:600;font-size:.95rem">Loading…</div>
+            <div id="feelsLike" style="font-size:.78rem;color:var(--text-2);margin-top:2px">Feels like --°C</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div style="font-size:.78rem;color:var(--text-2)">↑ <span id="tMax" style="color:var(--danger);font-weight:600">--</span>°C</div>
+        <div style="font-size:.78rem;color:var(--text-2);margin-top:4px">↓ <span id="tMin" style="color:var(--accent-2);font-weight:600">--</span>°C</div>
+        <div style="font-size:.75rem;color:var(--text-3);margin-top:8px">🌅 <span id="sunrise">--</span></div>
+        <div style="font-size:.75rem;color:var(--text-3);margin-top:3px">🌇 <span id="sunset">--</span></div>
+      </div>
+    </div>
+    <span id="mockNote" class="badge badge-warning hidden" style="margin-bottom:10px">SIMULATED DATA</span>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--border);padding-top:14px">
+      <div class="mini-m"><span>💧</span><b id="m-hum">--%</b><small>Humidity</small></div>
+      <div class="mini-m"><span>🌬️</span><b id="m-wind">--</b><small>Wind</small></div>
+      <div class="mini-m"><span>⏲️</span><b id="m-pres">--</b><small>hPa</small></div>
+      <div class="mini-m"><span>👁️</span><b id="m-vis">--</b><small>Visibility</small></div>
+      <div class="mini-m"><span>☁️</span><b id="m-cloud">--%</b><small>Clouds</small></div>
+      <div class="mini-m"><span>🌧️</span><b id="m-rain">--</b><small>Rain mm</small></div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div class="card" style="animation-delay:.1s">
+      <div class="card-header"><span class="card-label">AIR QUALITY INDEX</span></div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div id="aqiCircle" style="width:78px;height:78px;border-radius:50%;border:3px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .5s,box-shadow .5s">
+          <span id="aqiNum" style="font-size:1.4rem;font-weight:700;color:var(--accent);font-family:var(--mono);transition:color .5s">--</span>
+          <span id="aqiLbl" style="font-size:.6rem;color:var(--text-2)">—</span>
+        </div>
+        <div style="flex:1">
+          <div id="aqiDesc" style="font-size:.8rem;color:var(--text-2);margin-bottom:8px">Loading AQI data…</div>
+          <div style="display:flex;gap:3px">
+            <div style="flex:1;height:5px;border-radius:3px;background:#4CAF50"></div>
+            <div style="flex:1;height:5px;border-radius:3px;background:#2196F3"></div>
+            <div style="flex:1;height:5px;border-radius:3px;background:#FF9800"></div>
+            <div style="flex:1;height:5px;border-radius:3px;background:#F44336"></div>
+            <div style="flex:1;height:5px;border-radius:3px;background:#9C27B0"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--text-3);margin-top:4px"><span style="color:#4CAF50">Good</span><span style="color:#9C27B0">Very Poor</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="animation-delay:.15s;flex:1">
+      <div class="card-header">
+        <span class="card-label">ACTIVE ALERTS</span>
+        <span id="alertCount" class="badge badge-danger">0</span>
+      </div>
+      <div id="alertsList" style="display:flex;flex-direction:column;gap:7px;max-height:160px;overflow-y:auto">
+        <div style="color:var(--success);font-size:.82rem">✅ No active alerts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4" style="animation-delay:.2s">
+  <div class="card-header">
+    <span class="card-label">TEMPERATURE — 48H FORECAST + ML PREDICTION</span>
+    <div style="display:flex;gap:14px;font-size:.7rem;color:var(--text-2)">
+      <span><i style="display:inline-block;width:10px;height:3px;background:var(--accent);border-radius:2px;margin-right:5px;vertical-align:middle"></i>API</span>
+      <span><i style="display:inline-block;width:10px;height:3px;background:var(--warning);border-radius:2px;margin-right:5px;vertical-align:middle"></i>ML</span>
+    </div>
+  </div>
+  <div class="chart-wrap tall"><canvas id="tempChart"></canvas></div>
+</div>
+
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.25s">
+    <div class="card-header"><span class="card-label">HUMIDITY &amp; RAIN PROBABILITY</span></div>
+    <div class="chart-wrap"><canvas id="humChart"></canvas></div>
+  </div>
+  <div class="card" style="animation-delay:.3s">
+    <div class="card-header"><span class="card-label">WIND SPEED FORECAST</span></div>
+    <div class="chart-wrap"><canvas id="windChart"></canvas></div>
+  </div>
+</div>
+
+<div class="card mb-4" style="animation-delay:.35s">
+  <div class="card-header"><span class="card-label">HOURLY FORECAST STRIP</span></div>
+  <div id="fcStrip" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin"></div>
+</div>
+
+<div class="card" style="animation-delay:.4s">
+  <div class="card-header"><span class="card-label">💡 ACTIVITY RECOMMENDATIONS</span></div>
+  <div id="activityTips" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+</div>
+
+<style>
+.mini-m{text-align:center;padding:8px 4px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+.mini-m span{display:block;font-size:.95rem;margin-bottom:2px}
+.mini-m b{display:block;font-size:.88rem;font-weight:600;font-family:var(--mono);color:var(--text)}
+.mini-m small{display:block;font-size:.6rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.fc-item{flex:0 0 82px;text-align:center;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:8px 4px;transition:border-color .2s,background .2s}
+.fc-item:hover{border-color:var(--accent);background:var(--accent-glow)}
+.al-item{padding:8px 12px;border-radius:6px;border-left:3px solid transparent;font-size:.78rem}
+.al-danger{background:rgba(244,63,94,.08);border-color:var(--danger)}
+.al-warning{background:rgba(245,158,11,.08);border-color:var(--warning)}
+.al-info{background:rgba(6,182,212,.08);border-color:var(--accent)}
+.al-title{font-weight:600;margin-bottom:1px;font-size:.78rem}
+.al-msg{font-size:.72rem;color:var(--text-2)}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

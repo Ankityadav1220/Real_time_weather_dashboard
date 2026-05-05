@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Multi-City{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>🌍 Multi-City Comparison</h1>
+  <p>Compare weather conditions across multiple cities simultaneously</p>
+</div>
+
+<!-- ─── Add City Bar ────────────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.05s">
+  <div class="card-header">
+    <span class="card-label">MANAGE CITIES</span>
+    <span class="badge badge-accent" id="cityCountBadge">0 / 6</span>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <div style="position:relative;flex:1;min-width:220px;max-width:320px">
+      <input type="text" id="cityAddInput" placeholder="Add a city…"
+        style="width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text);font-family:var(--font);font-size:.88rem;padding:9px 14px;outline:none">
+      <div class="autocomplete-list" id="cityAddAC"></div>
+    </div>
+    <button class="btn btn-primary" id="addCityBtn">+ Add City</button>
+    <button class="btn btn-ghost" onclick="loadPresets()">📌 Load Defaults</button>
+    <button class="btn btn-ghost" id="refreshAllBtn">🔄 Refresh All</button>
+  </div>
+  <div id="cityTags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"></div>
+</div>
+
+<!-- ─── City Cards Grid ─────────────────────────────────────── -->
+<div id="cityGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:20px"></div>
+
+<!-- ─── Comparison Chart ─────────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.1s">
+  <div class="card-header">
+    <span class="card-label">TEMPERATURE COMPARISON</span>
+    <select id="compareMetric" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.78rem;border-radius:6px;padding:4px 10px;outline:none">
+      <option value="temperature">Temperature (°C)</option>
+      <option value="humidity">Humidity (%)</option>
+      <option value="wind_speed">Wind Speed (km/h)</option>
+      <option value="pressure">Pressure (hPa)</option>
+    </select>
+  </div>
+  <div class="chart-wrap tall"><canvas id="compareChart"></canvas></div>
+</div>
+
+<!-- ─── Rank Table ──────────────────────────────────────────── -->
+<div class="card" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">CITY RANKINGS</span></div>
+  <div style="overflow-x:auto">
+    <table id="rankTable" style="width:100%;border-collapse:collapse;font-size:.82rem">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border)">
+          <th style="padding:10px 12px;text-align:left;color:var(--text-2);font-weight:500">#</th>
+          <th style="padding:10px 12px;text-align:left;color:var(--text-2);font-weight:500">City</th>
+          <th style="padding:10px 12px;text-align:center;color:var(--text-2);font-weight:500">🌡️ Temp</th>
+          <th style="padding:10px 12px;text-align:center;color:var(--text-2);font-weight:500">💧 Humidity</th>
+          <th style="padding:10px 12px;text-align:center;color:var(--text-2);font-weight:500">🌬️ Wind</th>
+          <th style="padding:10px 12px;text-align:center;color:var(--text-2);font-weight:500">🏭 AQI</th>
+          <th style="padding:10px 12px;text-align:center;color:var(--text-2);font-weight:500">Condition</th>
+        </tr>
+      </thead>
+      <tbody id="rankBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.city-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;backdrop-filter:var(--glass-blur);animation:fadeUp .4s ease both;transition:border-color .2s}
+.city-card:hover{border-color:var(--border-h)}
+.city-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.city-name-lbl{font-size:.9rem;font-weight:700}
+.city-country{font-size:.72rem;color:var(--text-3);font-family:var(--mono)}
+.city-temp{font-size:2.2rem;font-weight:700;color:var(--accent);font-family:var(--mono);letter-spacing:-.03em}
+.city-desc{font-size:.78rem;color:var(--text-2);margin-top:2px}
+.city-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.cm-item{text-align:center;font-size:.72rem}
+.cm-val{font-weight:600;color:var(--text);font-family:var(--mono)}
+.cm-lbl{color:var(--text-3);font-size:.6rem;margin-top:1px}
+.city-tag{display:flex;align-items:center;gap:6px;background:var(--accent-glow);border:1px solid var(--accent);border-radius:20px;padding:4px 10px;font-size:.78rem;color:var(--accent)}
+.city-tag button{background:none;border:none;cursor:pointer;color:var(--accent);font-size:.85rem;padding:0;line-height:1}
+.city-remove{position:absolute;top:10px;right:10px;background:rgba(244,63,94,.15);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;color:var(--danger);font-size:.75rem;display:flex;align-items:center;justify-content:center}
+.city-card{position:relative}
+tr.rank-row:hover{background:rgba(255,255,255,.03)}
+.rank-cell{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+</style>
+{% endblock %}
+{% block scripts %}<script src="/static/js/cities.js"></script>{% endblock %}

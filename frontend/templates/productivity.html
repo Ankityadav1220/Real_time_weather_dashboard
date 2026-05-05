@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Mood & Focus{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>🧠 Mood &amp; Productivity AI</h1><p>Weather-driven cognitive performance analysis and personalised activity recommendations</p></div>
+<div class="stat-row mb-6">
+  <div class="stat-card"><div class="stat-val" id="p-cognitive" style="color:var(--accent)">--%</div><div class="stat-lbl">Cognitive Score</div></div>
+  <div class="stat-card"><div class="stat-val" id="p-energy" style="color:var(--success)">--%</div><div class="stat-lbl">Energy Level</div></div>
+  <div class="stat-card"><div class="stat-val" id="p-mood" style="color:var(--warning)">--%</div><div class="stat-lbl">Mood Score</div></div>
+  <div class="stat-card"><div class="stat-val" id="p-overall">--%</div><div class="stat-lbl">Overall Score</div></div>
+  <div class="stat-card"><div class="stat-val" id="p-circadian" style="font-size:.9rem">--</div><div class="stat-lbl">Circadian Phase</div></div>
+</div>
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header"><span class="card-label">PERFORMANCE SCORES</span></div>
+    <div id="prodScores" style="display:flex;flex-direction:column;gap:10px;padding:4px 0"></div>
+    <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:12px">
+      <div class="card-label" style="margin-bottom:8px">WEATHER CONTEXT</div>
+      <div id="prodContext" style="display:flex;flex-direction:column;gap:6px;font-size:.78rem;color:var(--text-2)"></div>
+    </div>
+  </div>
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">⏰ 12-HOUR FOCUS WINDOWS</span></div>
+    <div id="windowTimeline" class="window-timeline"></div>
+    <div class="chart-wrap" style="margin-top:12px"><canvas id="windowChart"></canvas></div>
+  </div>
+</div>
+<div class="card mb-4" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">💡 AI RECOMMENDATIONS</span></div>
+  <div id="prodRecs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px"></div>
+</div>
+<div class="card" style="animation-delay:.2s">
+  <div class="card-header"><span class="card-label">📊 COGNITIVE PERFORMANCE FORECAST</span></div>
+  <div class="chart-wrap tall"><canvas id="cogChart"></canvas></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/productivity.js"></script>{% endblock %}

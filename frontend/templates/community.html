@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Community{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>👥 Community Weather Intelligence</h1><p>Crowd-sourced real-world reports — compare what people near you are experiencing with API predictions</p></div>
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.05s">
+    <div class="card-header"><span class="card-label">📝 SUBMIT A REPORT</span></div>
+    <div class="report-form" id="reportForm">
+      <div class="form-field"><label>City</label><input type="text" id="rptCity" value="Delhi"></div>
+      <div class="form-field"><label>Report Type</label>
+        <select id="rptType"><option value="rain">Heavy Rain</option><option value="flood">Flooding</option><option value="fog">Dense Fog</option><option value="heatwave">Heatwave</option><option value="storm">Storm</option><option value="clear">Clear Skies</option><option value="other">Other</option></select></div>
+      <div class="form-field"><label>Severity</label>
+        <select id="rptSev"><option value="mild">Mild</option><option value="moderate" selected>Moderate</option><option value="severe">Severe</option><option value="extreme">Extreme</option></select></div>
+      <div class="form-field full"><label>Note (optional)</label><textarea id="rptNote" rows="2" placeholder="Describe what you're seeing…" style="resize:vertical"></textarea></div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:12px;width:100%;justify-content:center" onclick="submitReport()">📤 Submit Report</button>
+  </div>
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">📊 COMMUNITY vs API COMPARISON</span></div>
+    <div id="comparisonPanel" style="display:flex;flex-direction:column;gap:10px;padding:6px 0">
+      <div style="color:var(--text-3);font-size:.82rem">Loading comparison data…</div>
+    </div>
+  </div>
+</div>
+<div class="card" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">🌍 RECENT COMMUNITY REPORTS</span>
+    <button class="btn btn-ghost" style="font-size:.75rem;padding:5px 12px" onclick="loadReports()">↻ Refresh</button></div>
+  <div id="reportsList" style="display:flex;flex-direction:column;gap:10px"></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/community.js"></script>{% endblock %}

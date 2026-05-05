@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Health Impact{% endblock %}
+{% block content %}
+<div class="page-hero"><h1>💊 Health Impact Predictor</h1><p>Weather-driven health risk analysis across respiratory, cardiovascular, and mental wellbeing systems</p></div>
+<div class="profile-setup">
+  <h3>⚙️ Health Profile</h3>
+  <div class="profile-row">
+    <div class="profile-field"><label>Age Group</label>
+      <select id="hiAge"><option value="child">Child</option><option value="teen">Teen</option><option value="adult" selected>Adult</option><option value="senior">Senior (60+)</option></select></div>
+    <div class="profile-field"><label>Conditions</label>
+      <select id="hiCond" multiple style="height:72px;min-width:200px;background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.85rem;padding:6px 10px;border-radius:6px;outline:none">
+        <option value="asthma">Asthma</option><option value="heart_disease">Heart Disease</option>
+        <option value="diabetes">Diabetes</option><option value="copd">COPD</option>
+        <option value="hypertension">Hypertension</option><option value="pregnancy">Pregnancy</option></select></div>
+    <button class="btn btn-primary" onclick="loadHealth()">🔍 Analyse Health Impact</button>
+  </div>
+</div>
+<div class="stat-row mb-4">
+  <div class="stat-card"><div class="stat-val" id="hi-overall" style="color:var(--warning)">--</div><div class="stat-lbl">Overall Health Risk</div></div>
+  <div class="stat-card"><div class="stat-val" id="hi-temp">--°C</div><div class="stat-lbl">Temperature</div></div>
+  <div class="stat-card"><div class="stat-val" id="hi-hum">--%</div><div class="stat-lbl">Humidity</div></div>
+  <div class="stat-card"><div class="stat-val" id="hi-aqi">--</div><div class="stat-lbl">AQI Level</div></div>
+</div>
+<div class="card mb-4" style="animation-delay:.1s">
+  <div class="card-header"><span class="card-label">HEALTH IMPACT BY SYSTEM</span></div>
+  <div class="health-grid" id="healthGrid"></div>
+</div>
+<div class="card" style="animation-delay:.15s">
+  <div class="card-header"><span class="card-label">📊 HEALTH RISK COMPARISON</span></div>
+  <div class="chart-wrap tall"><canvas id="healthChart"></canvas></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/health_impact.js"></script>{% endblock %}

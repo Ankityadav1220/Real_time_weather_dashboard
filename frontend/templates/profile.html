@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <h1>👤 My Profile</h1>
+  <p>Account details and preferences</p>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header"><span class="card-label">ACCOUNT INFO</span></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:var(--accent)">
+        {{ user.username[0].upper() }}
+      </div>
+      <div>
+        <div style="font-size:1.1rem;font-weight:700">{{ user.username }}</div>
+        <div style="font-size:.82rem;color:var(--text-2)">{{ user.email }}</div>
+        <span class="badge badge-success" style="margin-top:6px">Active</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);padding-top:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.85rem"><span style="color:var(--text-2)">Username</span><span class="mono">{{ user.username }}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:.85rem"><span style="color:var(--text-2)">Email</span><span class="mono">{{ user.email }}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:.85rem"><span style="color:var(--text-2)">Account type</span><span>Standard</span></div>
+    </div>
+    <a href="/logout" class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:20px">⏏ Sign Out</a>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-label">PREFERENCES</span></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:.88rem;font-weight:500">Default City</div><div style="font-size:.75rem;color:var(--text-2)">Your home city for weather</div></div>
+        <input type="text" id="prefCity" value="Delhi" style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.85rem;padding:7px 12px;border-radius:6px;outline:none;width:130px">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:.88rem;font-weight:500">Theme</div><div style="font-size:.75rem;color:var(--text-2)">Dark or light interface</div></div>
+        <button class="btn btn-outline" onclick="toggleTheme()" style="font-size:.8rem;padding:6px 14px">Toggle Theme</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:.88rem;font-weight:500">Temperature Unit</div><div style="font-size:.75rem;color:var(--text-2)">Celsius or Fahrenheit</div></div>
+        <select style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.85rem;padding:7px 10px;border-radius:6px;outline:none">
+          <option>°C Celsius</option><option>°F Fahrenheit</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="margin-top:6px;justify-content:center" onclick="showToast('Preferences saved!','success')">💾 Save Preferences</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Alerts & Safety{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>🚨 Alerts &amp; Health Safety</h1>
+  <p>Real-time weather warnings, health advisories, and safety recommendations</p>
+</div>
+
+<!-- ─── Alert Summary Stats ─────────────────────────────────── -->
+<div class="stat-row mb-6">
+  <div class="stat-card"><div class="stat-val" id="al-total" style="color:var(--danger)">--</div><div class="stat-lbl">Active Alerts</div></div>
+  <div class="stat-card"><div class="stat-val" id="al-aqi">--</div><div class="stat-lbl">AQI Level</div></div>
+  <div class="stat-card"><div class="stat-val" id="al-uv">--</div><div class="stat-lbl">UV Index</div></div>
+  <div class="stat-card"><div class="stat-val" id="al-heat">--°C</div><div class="stat-lbl">Heat Index</div></div>
+  <div class="stat-card"><div class="stat-val" id="al-dew">--°C</div><div class="stat-lbl">Dew Point</div></div>
+</div>
+
+<!-- ─── Active Alerts Panel ─────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.05s">
+  <div class="card-header">
+    <span class="card-label">⚠️ ACTIVE WEATHER ALERTS</span>
+    <button class="btn btn-outline" style="font-size:.78rem;padding:6px 14px" onclick="refreshAlerts()">🔄 Refresh</button>
+  </div>
+  <div id="activeAlerts" style="display:flex;flex-direction:column;gap:10px">
+    <div style="color:var(--success);font-size:.88rem;padding:12px">✅ No active weather alerts for this city</div>
+  </div>
+</div>
+
+<!-- ─── Health Safety Grid ──────────────────────────────────── -->
+<div class="grid-2 mb-4">
+
+  <!-- Air Quality Detail -->
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-header"><span class="card-label">🌫️ AIR QUALITY DETAILS</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div id="aqiMain" style="text-align:center;padding:16px 0">
+        <div id="aqiBig" style="font-size:3rem;font-weight:700;color:var(--accent);font-family:var(--mono)">--</div>
+        <div id="aqiBigLbl" style="font-size:1rem;font-weight:600;margin-top:4px">Loading…</div>
+        <div id="aqiBigDesc" style="font-size:.82rem;color:var(--text-2);margin-top:6px;max-width:260px;margin-inline:auto">--</div>
+      </div>
+      <div class="grid-2" style="gap:8px">
+        <div class="stat-card" style="padding:10px"><div class="stat-val" id="pm25" style="font-size:1.2rem">--</div><div class="stat-lbl">PM 2.5 μg/m³</div></div>
+        <div class="stat-card" style="padding:10px"><div class="stat-val" id="pm10" style="font-size:1.2rem">--</div><div class="stat-lbl">PM 10 μg/m³</div></div>
+        <div class="stat-card" style="padding:10px"><div class="stat-val" id="co2" style="font-size:1.2rem">--</div><div class="stat-lbl">CO ppm</div></div>
+        <div class="stat-card" style="padding:10px"><div class="stat-val" id="o3" style="font-size:1.2rem">--</div><div class="stat-lbl">O₃ μg/m³</div></div>
+      </div>
+      <div class="aqi-gauge-bar">
+        <div id="aqiGaugeFill" style="height:8px;border-radius:4px;background:var(--success);width:20%;transition:width .8s,background .5s"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UV & Heat Index -->
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-header"><span class="card-label">🌡️ HEAT & UV SAFETY</span></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px">
+        <div style="font-size:.7rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Heat Index</div>
+        <div id="heatIndexVal" style="font-size:2rem;font-weight:700;color:var(--warning);font-family:var(--mono)">--°C</div>
+        <div id="heatIndexDesc" style="font-size:.78rem;color:var(--text-2);margin-top:4px">--</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px">
+        <div style="font-size:.7rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">UV Index</div>
+        <div id="uvVal" style="font-size:2rem;font-weight:700;color:var(--danger);font-family:var(--mono)">--</div>
+        <div id="uvDesc" style="font-size:.78rem;color:var(--text-2);margin-top:4px">--</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:12px">
+        <div style="font-size:.7rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Dew Point</div>
+        <div id="dewPointVal" style="font-size:2rem;font-weight:700;color:var(--accent);font-family:var(--mono)">--°C</div>
+        <div id="dewDesc" style="font-size:.78rem;color:var(--text-2);margin-top:4px">--</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Health Recommendations ──────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.2s">
+  <div class="card-header"><span class="card-label">💊 HEALTH &amp; SAFETY RECOMMENDATIONS</span></div>
+  <div id="healthRecs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px"></div>
+</div>
+
+<!-- ─── Safety Checklists ────────────────────────────────────── -->
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.25s">
+    <div class="card-header"><span class="card-label">🏃 OUTDOOR ACTIVITY GUIDE</span></div>
+    <div id="outdoorGuide" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+  <div class="card" style="animation-delay:.3s">
+    <div class="card-header"><span class="card-label">🚨 EMERGENCY PREPAREDNESS</span></div>
+    <div id="emergencyGuide" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</div>
+
+<!-- ─── AQI Trend Chart ────────────────────────────────────── -->
+<div class="card" style="animation-delay:.35s">
+  <div class="card-header"><span class="card-label">📊 AQI TREND — PAST 24H (SIMULATED)</span></div>
+  <div class="chart-wrap"><canvas id="aqiChart"></canvas></div>
+</div>
+
+<style>
+.alert-card{border-radius:10px;padding:14px;border-left:4px solid;animation:fadeUp .3s ease both}
+.alert-card.danger {background:rgba(244,63,94,.08); border-color:var(--danger)}
+.alert-card.warning{background:rgba(245,158,11,.08); border-color:var(--warning)}
+.alert-card.info   {background:rgba(6,182,212,.08);  border-color:var(--accent)}
+.alert-card.success{background:rgba(16,185,129,.08); border-color:var(--success)}
+.alert-title{font-weight:600;font-size:.88rem;margin-bottom:4px}
+.alert-body {font-size:.78rem;color:var(--text-2)}
+.health-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:14px}
+.health-icon{font-size:1.6rem;margin-bottom:8px}
+.health-title{font-weight:600;font-size:.88rem;margin-bottom:4px}
+.health-desc{font-size:.78rem;color:var(--text-2);line-height:1.5}
+.guide-item{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:6px}
+.guide-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.guide-text{font-size:.8rem;color:var(--text-2);line-height:1.5}
+.aqi-gauge-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:4px}
+</style>
+{% endblock %}
+{% block scripts %}<script src="/static/js/alerts.js"></script>{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}ML Models{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>🤖 ML Model Performance</h1>
+  <p>Compare Linear Regression, Random Forest and LSTM — train, evaluate and predict</p>
+</div>
+
+<!-- ─── Model Cards ─────────────────────────────────────────── -->
+<div class="grid-3 mb-4" id="modelCards">
+  {% for name, prefix, icon in [('Linear Regression','lr','📐'), ('Random Forest','rf','🌲'), ('LSTM Network','lstm','🧠')] %}
+  <div class="card model-card" id="{{ prefix }}-card" style="animation-delay:{{ loop.index0 * 0.08 }}s">
+    <div class="card-header">
+      <span style="font-size:1.2rem">{{ icon }}</span>
+      <span class="card-label">{{ name.upper() }}</span>
+      <span id="{{ prefix }}-badge" class="badge badge-info" style="display:none">Best</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+      <div class="ml-row"><span class="ml-key">MAE</span><span id="{{ prefix }}-mae" class="ml-val">…</span></div>
+      <div class="ml-row"><span class="ml-key">RMSE</span><span id="{{ prefix }}-rmse" class="ml-val">…</span></div>
+      <div class="ml-row"><span class="ml-key">R² Score</span><span id="{{ prefix }}-r2" class="ml-val">…</span></div>
+      <div class="ml-row"><span class="ml-key">MAPE %</span><span id="{{ prefix }}-mape" class="ml-val">…</span></div>
+      <div class="ml-row"><span class="ml-key">Train Samples</span><span id="{{ prefix }}-samples" class="ml-val">…</span></div>
+    </div>
+    <div id="{{ prefix }}-r2-bar" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--text-3);margin-bottom:4px">
+        <span>R² Score</span><span id="{{ prefix }}-r2-pct">--</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="{{ prefix }}-fill" style="width:0%;background:var(--accent)"></div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ─── Train Controls ──────────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.25s">
+  <div class="card-header">
+    <span class="card-label">🎓 TRAIN MODELS</span>
+    <span id="trainStatus" class="badge badge-info">Ready</span>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <div>
+      <label style="font-size:.75rem;color:var(--text-2);display:block;margin-bottom:4px">City</label>
+      <input id="trainCity" type="text" value="Delhi"
+        style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 12px;font-family:var(--font);font-size:.85rem;outline:none;width:160px">
+    </div>
+    <div>
+      <label style="font-size:.75rem;color:var(--text-2);display:block;margin-bottom:4px">Target Variable</label>
+      <select id="trainTarget"
+        style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 12px;font-family:var(--font);font-size:.85rem;outline:none">
+        <option value="temperature">Temperature (°C)</option>
+        <option value="humidity">Humidity (%)</option>
+        <option value="wind_speed">Wind Speed (km/h)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="trainBtn" style="align-self:flex-end" onclick="trainModels()">
+      🚀 Train All Models
+    </button>
+    <button class="btn btn-ghost" style="align-self:flex-end" onclick="loadMetrics()">
+      ↻ Refresh Metrics
+    </button>
+  </div>
+  <div id="trainLog" style="margin-top:14px;background:rgba(0,0,0,.2);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.75rem;color:var(--text-2);min-height:48px;max-height:120px;overflow-y:auto;display:none"></div>
+</div>
+
+<!-- ─── Comparison Chart ─────────────────────────────────────── -->
+<div class="grid-2 mb-4">
+  <div class="card" style="animation-delay:.3s">
+    <div class="card-header"><span class="card-label">MODEL COMPARISON — R² SCORE</span></div>
+    <div class="chart-wrap"><canvas id="r2Chart"></canvas></div>
+  </div>
+  <div class="card" style="animation-delay:.35s">
+    <div class="card-header"><span class="card-label">ERROR METRICS (MAE / RMSE)</span></div>
+    <div class="chart-wrap"><canvas id="errorChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ─── Prediction Preview ──────────────────────────────────── -->
+<div class="card mb-4" style="animation-delay:.4s">
+  <div class="card-header">
+    <span class="card-label">🔮 ML PREDICTION PREVIEW</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select id="predTarget"
+        style="background:var(--bg-input);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.78rem;border-radius:6px;padding:4px 10px;outline:none">
+        <option value="temperature">Temperature</option>
+        <option value="humidity">Humidity</option>
+        <option value="wind_speed">Wind Speed</option>
+      </select>
+      <button class="btn btn-outline" style="font-size:.78rem;padding:5px 12px" onclick="loadPredictions()">Generate</button>
+    </div>
+  </div>
+  <div class="chart-wrap tall"><canvas id="predChart"></canvas></div>
+</div>
+
+<!-- ─── Feature Importance ──────────────────────────────────── -->
+<div class="card" style="animation-delay:.45s">
+  <div class="card-header"><span class="card-label">🎯 TOP FEATURES (RANDOM FOREST)</span></div>
+  <div id="featureImportance" style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto"></div>
+</div>
+
+<style>
+.model-card{transition:border-color .3s}
+.model-card.best{border-color:var(--success)}
+.model-card.best .card-label{color:var(--success)}
+.ml-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
+.ml-row:last-of-type{border:none}
+.ml-key{font-size:.78rem;color:var(--text-2)}
+.ml-val{font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--accent)}
+.fi-row{display:flex;align-items:center;gap:10px}
+.fi-name{font-size:.78rem;width:200px;flex-shrink:0;color:var(--text-2);font-family:var(--mono)}
+.fi-bar-wrap{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.fi-bar{height:100%;background:var(--info);border-radius:3px;transition:width .8s ease}
+.fi-pct{font-size:.72rem;color:var(--text-3);width:40px;text-align:right;font-family:var(--mono)}
+</style>
+{% endblock %}
+{% block scripts %}<script src="/static/js/ml_models.js"></script>{% endblock %}

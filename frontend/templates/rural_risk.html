@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Rural & Farm Risk{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <h1>🌾 Rural & Agricultural Intelligence</h1>
+  <p>Farm risk, crop advisories, and rural weather analysis — auto-syncs with your location</p>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <span class="card-label">LOCATION</span>
+    <span id="ruralCity" class="mono" style="font-size:.85rem">--</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <label style="font-size:.85rem;color:var(--text-2)">Crop Type:</label>
+    <select id="cropSelect" class="input-field" style="width:200px">
+      <option value="general">General / Mixed</option>
+      <option value="wheat">Wheat</option>
+      <option value="rice">Rice / Paddy</option>
+      <option value="sugarcane">Sugarcane</option>
+      <option value="cotton">Cotton</option>
+      <option value="vegetables">Vegetables</option>
+      <option value="fruits">Fruits / Orchards</option>
+    </select>
+    <span style="font-size:.78rem;color:var(--text-3)">Analysis updates automatically when you change location</span>
+  </div>
+</div>
+
+<div id="ruralLoading" class="hidden" style="text-align:center;padding:40px;color:var(--text-2)">
+  🌾 Analysing agricultural conditions…
+</div>
+
+<div id="ruralContent">
+  <div class="stat-row mb-4">
+    <div class="stat-card"><div class="stat-val" id="risk-flood_risk" style="color:var(--danger)">--</div><div class="stat-lbl">Flood Risk</div></div>
+    <div class="stat-card"><div class="stat-val" id="risk-drought_risk" style="color:var(--warning)">--</div><div class="stat-lbl">Drought Risk</div></div>
+    <div class="stat-card"><div class="stat-val" id="risk-frost_risk" style="color:var(--accent-2)">--</div><div class="stat-lbl">Frost Risk</div></div>
+    <div class="stat-card"><div class="stat-val" id="risk-heat_stress" style="color:var(--danger)">--</div><div class="stat-lbl">Heat Stress</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-label">FARM ADVISORIES</span></div>
+    <div id="ruralAdvisories" style="display:flex;flex-direction:column;gap:10px">
+      <div style="color:var(--text-2);font-size:.85rem">Loading advisories…</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/rural_risk.js"></script>{% endblock %}

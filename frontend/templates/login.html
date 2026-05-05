@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% if page=='register' %}Register{% else %}Login{% endif %} — WeatherIQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/weather-bg.css">
+<style>
+body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.auth-wrap{width:100%;max-width:420px;z-index:10;padding:16px}
+.auth-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;backdrop-filter:var(--glass-blur);box-shadow:var(--shadow);animation:fadeUp .4s ease both}
+.auth-logo{text-align:center;margin-bottom:28px}
+.auth-logo .logo-text{font-size:1.6rem;font-weight:700;letter-spacing:-.03em}
+.auth-logo .logo-iq{color:var(--accent)}
+.auth-logo .sub{font-size:.82rem;color:var(--text-2);margin-top:4px}
+.tab-row{display:flex;border-bottom:1px solid var(--border);margin-bottom:24px}
+.tab-btn{flex:1;padding:10px;background:none;border:none;color:var(--text-2);font-family:var(--font);font-size:.9rem;font-weight:500;cursor:pointer;transition:color .2s;border-bottom:2px solid transparent}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.78rem;color:var(--text-2);margin-bottom:6px;font-weight:500}
+.form-input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text);font-family:var(--font);font-size:.9rem;padding:10px 14px;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--accent)}
+.form-input::placeholder{color:var(--text-3)}
+.btn-block{width:100%;padding:11px;font-size:.9rem}
+.divider{text-align:center;font-size:.78rem;color:var(--text-3);margin:16px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+.divider::before{left:0}.divider::after{right:0}
+.btn-demo{width:100%;padding:10px;background:rgba(139,92,246,.12);border:1px solid var(--info);color:var(--info);border-radius:var(--radius-xs);font-family:var(--font);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-demo:hover{background:var(--info);color:#fff}
+.err-msg{background:rgba(244,63,94,.1);border:1px solid var(--danger);border-radius:6px;color:var(--danger);padding:9px 12px;font-size:.8rem;margin-bottom:14px;display:none}
+.theme-corner{position:fixed;top:16px;right:16px;z-index:20;background:var(--bg-input);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem}
+</style>
+</head>
+<body class="weather-clear">
+<div class="weather-bg" id="weatherBg">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="grid-overlay"></div>
+</div>
+
+<button class="theme-corner" id="themeToggle" onclick="toggleTheme()">🌙</button>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div style="font-size:2rem;margin-bottom:6px">⛅</div>
+      <div class="logo-text">Weather<span class="logo-iq">IQ</span></div>
+      <div class="sub">ML-Powered Weather Intelligence</div>
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn {% if page=='login' %}active{% endif %}" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn {% if page=='register' %}active{% endif %}" id="registerTab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <div id="errMsg" class="err-msg"></div>
+
+    <!-- Login Form -->
+    <div id="loginForm" style="display:{% if page=='register' %}none{% else %}block{% endif %}">
+      <div class="form-group">
+        <label class="form-label">Username or Email</label>
+        <input type="text" id="loginUser" class="form-input" placeholder="Enter username or email" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="loginPass" class="form-input" placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="doLogin()">Sign In →</button>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" style="display:{% if page=='register' %}block{% else %}none{% endif %}">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" id="regUser" class="form-input" placeholder="Choose a username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="regEmail" class="form-input" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="regPass" class="form-input" placeholder="Min 6 characters" autocomplete="new-password">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="doRegister()">Create Account →</button>
+    </div>
+
+    <div class="divider">or</div>
+    <button class="btn-demo" onclick="demoLogin()">⚡ Continue as Demo User</button>
+
+    <p style="text-align:center;font-size:.75rem;color:var(--text-3);margin-top:18px">
+      No account needed to explore — demo gives full access
+    </p>
+  </div>
+</div>
+
+<script>
+const THEME_KEY = 'wiq_theme';
+function getTheme(){return localStorage.getItem(THEME_KEY)||'dark'}
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('themeToggle').textContent = t==='dark'?'🌙':'☀️';
+  localStorage.setItem(THEME_KEY,t);
+}
+function toggleTheme(){applyTheme(getTheme()==='dark'?'light':'dark')}
+applyTheme(getTheme());
+
+function switchTab(tab){
+  document.getElementById('loginForm').style.display    = tab==='login'    ? 'block':'none';
+  document.getElementById('registerForm').style.display = tab==='register' ? 'block':'none';
+  document.getElementById('loginTab').classList.toggle('active', tab==='login');
+  document.getElementById('registerTab').classList.toggle('active', tab==='register');
+  document.getElementById('errMsg').style.display='none';
+}
+
+function showErr(msg){
+  const el=document.getElementById('errMsg');
+  el.textContent=msg; el.style.display='block';
+}
+
+async function doLogin(){
+  const username=document.getElementById('loginUser').value.trim();
+  const password=document.getElementById('loginPass').value;
+  if(!username||!password){showErr('Please fill in all fields');return}
+  try{
+    const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+    const d=await r.json();
+    if(d.success){window.location.href='/'}
+    else showErr(d.error||'Login failed');
+  }catch(e){showErr('Network error')}
+}
+
+async function doRegister(){
+  const username=document.getElementById('regUser').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const password=document.getElementById('regPass').value;
+  if(!username||!email||!password){showErr('Please fill in all fields');return}
+  try{
+    const r=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password})});
+    const d=await r.json();
+    if(d.success){window.location.href='/'}
+    else showErr(d.error||'Registration failed');
+  }catch(e){showErr('Network error')}
+}
+
+async function demoLogin(){
+  const r=await fetch('/api/auth/demo-login',{method:'POST'});
+  const d=await r.json();
+  if(d.success) window.location.href='/';
+}
+
+// Enter key support
+['loginUser','loginPass'].forEach(id=>{
+  document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+});
+['regUser','regEmail','regPass'].forEach(id=>{
+  document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doRegister()});
+});
+</script>
+</body>
+</html>

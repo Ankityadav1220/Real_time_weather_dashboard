@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}WeatherIQ{% endblock %} — AI Weather Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/weather-bg.css">
+<link rel="stylesheet" href="/static/css/intelligence.css">
+{% block head %}{% endblock %}
+</head>
+<body class="weather-clear">
+
+<div class="weather-bg" id="weatherBg">
+  <div class="weather-particles" id="weatherParticles"></div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+  <div class="grid-overlay"></div>
+</div>
+
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">⛅</span>
+    <span class="logo-text">Weather<span class="logo-iq">IQ</span></span>
+    <span class="sidebar-ai-badge">AI</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">WEATHER</div>
+    <a href="/"              class="nav-item {% if page=='dashboard'    %}active{% endif %}"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a>
+    <a href="/forecast"      class="nav-item {% if page=='forecast'     %}active{% endif %}"><span class="nav-icon">📅</span><span class="nav-label">Forecast</span></a>
+    <a href="/alerts"        class="nav-item {% if page=='alerts'       %}active{% endif %}"><span class="nav-icon">🚨</span><span class="nav-label">Alerts &amp; Safety</span><span class="nav-badge" id="alertBadge" style="display:none">0</span></a>
+    <a href="/cities"        class="nav-item {% if page=='cities'       %}active{% endif %}"><span class="nav-icon">🌍</span><span class="nav-label">Multi-City</span></a>
+
+    <div class="nav-section-label" style="margin-top:8px">AI INTELLIGENCE</div>
+    <a href="/safety-radar"  class="nav-item {% if page=='safety'       %}active{% endif %}"><span class="nav-icon">🛡️</span><span class="nav-label">Safety Radar</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/nowcasting"    class="nav-item {% if page=='nowcast'      %}active{% endif %}"><span class="nav-icon">⚡</span><span class="nav-label">Nowcasting</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/productivity"  class="nav-item {% if page=='productivity' %}active{% endif %}"><span class="nav-icon">🧠</span><span class="nav-label">Mood &amp; Focus</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/health-impact" class="nav-item {% if page=='health'       %}active{% endif %}"><span class="nav-icon">💊</span><span class="nav-label">Health Impact</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/urban-risk"    class="nav-item {% if page=='urban'        %}active{% endif %}"><span class="nav-icon">🏙️</span><span class="nav-label">Urban Risk</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/route-planner" class="nav-item {% if page=='route'         %}active{% endif %}"><span class="nav-icon">🗺️</span><span class="nav-label">Route Planner</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/energy"        class="nav-item {% if page=='energy'       %}active{% endif %}"><span class="nav-icon">⚡</span><span class="nav-label">Energy AI</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/rural-risk"    class="nav-item {% if page=='rural'        %}active{% endif %}"><span class="nav-icon">🌾</span><span class="nav-label">Rural &amp; Farm</span><span class="nav-ai-tag">AI</span></a>
+    <a href="/hyperlocal"    class="nav-item {% if page=='hyperlocal'   %}active{% endif %}"><span class="nav-icon">📍</span><span class="nav-label">Hyperlocal</span><span class="nav-ai-tag">GPS</span></a>
+    <a href="/community"     class="nav-item {% if page=='community'    %}active{% endif %}"><span class="nav-icon">👥</span><span class="nav-label">Community</span></a>
+    <a href="/ai-assistant"  class="nav-item {% if page=='assistant'    %}active{% endif %}"><span class="nav-icon">🤖</span><span class="nav-label">AI Assistant</span><span class="nav-ai-tag">GPT</span></a>
+
+    <div class="nav-section-label" style="margin-top:8px">MODELS</div>
+    <a href="/ml-models"     class="nav-item {% if page=='ml'           %}active{% endif %}"><span class="nav-icon">📊</span><span class="nav-label">ML Models</span></a>
+  </nav>
+</aside>
+
+<header class="topbar" id="topbar">
+  <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+
+  <div class="topbar-search">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearch" placeholder="Search any city or village…" autocomplete="off" spellcheck="false">
+      <button id="geoBtn" title="Use my GPS location" class="geo-btn">📍</button>
+      <div class="autocomplete-list" id="autocompleteList"></div>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <span class="location-pill" id="locationPill">📍 Delhi</span>
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span class="live-text" id="liveClock">--:--</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+  </div>
+</header>
+
+<main class="main-content" id="mainContent">{% block content %}{% endblock %}</main>
+
+<div id="toast" class="toast hidden"></div>
+
+<div id="pageLoader" class="page-loader hidden">
+  <div class="loader-inner">
+    <div class="loader-rings"><div></div><div></div><div></div></div>
+    <div class="loader-text" id="loaderText">Loading…</div>
+  </div>
+</div>
+
+<script src="/static/js/base.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
